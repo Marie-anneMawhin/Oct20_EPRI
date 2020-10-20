@@ -8,3 +8,12 @@ For Team EPRI S2DS October 2020
 [Task1_ppt](https://docs.google.com/presentation/d/1QcZ-V8CXSpTUVbvfbHhydaB4qMhmnLku/edit?usp=drive_web&ouid=108700018416396420286&dls=true)
 
 
+
+
+**To manage env**
+
+
+install env: conda env create -f environment.yml
+
+
+add package: conda env export > environment.yml
