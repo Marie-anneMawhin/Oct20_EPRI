@@ -10,7 +10,7 @@ For Team EPRI S2DS October 2020
 
 
 
-**To manage env**
+**To manage [env](https://docs.conda.io/projects/continuumio-conda/en/latest/_downloads/843d9e0198f2a193a3484886fa28163c/conda-cheatsheet.pdf)**
 
 
 install env: conda env create -f environment.yml
