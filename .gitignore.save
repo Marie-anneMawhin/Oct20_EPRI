@@ -1,0 +1,6 @@
+ipynb_checkpoints/
+*.pdf
+*.docx
+*.xlsx
+*checkpoint.ipynb
+*checkpoint
