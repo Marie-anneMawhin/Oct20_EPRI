@@ -1,9 +1,0 @@
-,Sample,Absorption_avg,Absorption_std
-1,As received,0.0009824,0.0003254
-2,Fully ferritic,0.000866,0.0002764
-3,HAZ,0.0010512,0.000437
-4,HAZ + Tempered,0.0007883,0.0003172
-5,Normalized,0.0009585,0.00017529999999999998
-6,Normalized + Tempered,0.0012873,0.0003296
-7,Over-tempered,0.00078,0.0002345
-8,Tempered,0.0007416,0.0002868
