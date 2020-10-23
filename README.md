@@ -26,6 +26,10 @@ Lorem ipsum
 ## Repository Structure
 For each subtask, there are two main folders - `Data` and `NB`. The former one contains data in both raw and processed form. The latter one stores jupyter notebooks which are used for data extractions and data explorations.
 
+# Appendix
+
+## Links to relevant files
+
 [Notes](https://docs.google.com/document/d/1_8HSxKLifdZpNco2R6hCWIW6vQlPRSUpxpNqa5SYH8E)
 
 [Schedule](https://docs.google.com/document/d/1Up_pa0ke6wyo4jn19nN48EyxbP5PSi_h/edit)
@@ -34,4 +38,23 @@ For each subtask, there are two main folders - `Data` and `NB`. The former one c
 
 [Drive](https://drive.google.com/drive/folders/18NV_jjDFdq_Y-7V8B-2fPNCj60IIbeJs)
 
+## How to update new packages
 
+### > I want to install new package
+
+```
+cd PROJECT_ROOT_DIRECTORY
+pip install PACKAGE_NAME
+pip-chill > requirements.txt
+git add requirements.txt
+git commit -m "COMMENT"
+git pull
+git push
+```
+### > I want to update packages according to other's changes
+```
+cd PROJECT_ROOT_DIRECTORY
+git pull
+pip install -r requirements.txt
+```
+**Note** The commands in capital letters are placeholders.
