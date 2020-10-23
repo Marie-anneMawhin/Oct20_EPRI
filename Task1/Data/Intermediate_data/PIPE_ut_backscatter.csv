@@ -1,4 +1,4 @@
-,Sample,backscatter_rms
+,Sample,backscatter_avg
 0,As received,0.0272
 1,Normalized,0.0195
 2,Norm+Temp,0.023
