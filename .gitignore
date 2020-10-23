@@ -3,3 +3,5 @@
 *.save
 *checkpoint.ipynb
 *ipynb_checkpoints/
+**/*.cpython-38..pyc
+*__pycache__/
