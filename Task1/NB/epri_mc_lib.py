@@ -1,5 +1,4 @@
 
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
 import pandas as pd
 
 ###################### General functions ######################
@@ -12,23 +11,39 @@ def scale_general(df, scaler):
         
         Args:
         - df : pandas dataframe
-        - scaler : sklearn scaler with optional parameters
+        - scaler : initialized sklearn scaler function
         
-        return scaler and scaled df
+        return scaled df and fit scaler
     '''
-    scaler = scaler #Instantiation
     df_scaled = pd.DataFrame(scaler.fit_transform(df), columns=df.columns, index=df.index)
     return df_scaled, scaler
 
 
+def transform_df(df, scaler):
+    ''' Scale a dataframe using a fit scaler.
+        This is to prevent data leakage when the fit and transform datasets are different.
+        Keeps index and column names.
+        Return new dataframe.
+        
+        Args:
+        - df : pandas dataframe
+        - scaler : initialized and fit sklearn scaler function
+        
+        return scaled df
+    '''
+    df_scaled = pd.DataFrame(scaler.transform(df), columns=df.columns, index=df.index)
+    return df_scaled
+
+
 def calc_error_bounds(df, measures_list, errors_list):
-    ''' Get lower and upper error bounds of a measurement and add it to the current df
+    ''' Get lower and upper error bounds of a measurement in a data frame
     Args: 
-    df: pandas dataframe, 
+    df: pandas dataframe containing measures and errors, 
     measures_list: list of column names with measured values
     errors_list: list of column names with error values (stdev or error, etc)
 
-    returns two dataframes with measures with errors subtracted (lower boundary, LB) and measures with error added (upper boundary, UB)
+    returns two dataframes with measures with errors subtracted (lower boundary, with suffix "_LB") 
+        and measures with error added (upper boundary, with suffix "_UB")
     '''
     df_measures = df[measures_list]
     df_errors = df[errors_list]
@@ -37,8 +52,8 @@ def calc_error_bounds(df, measures_list, errors_list):
     df_upper_boundary = df_measures + df_errors.values
     df_upper_boundary = df_upper_boundary.add_suffix('_UB')
     
-
     return df_lower_boundary, df_upper_boundary
+
 
 def findAUC(df, A, B, p, f_init=8*10**6, f_end=22*10**6):
     '''Calculate the AUC for attenuation measurement and add it to the current dataframe
