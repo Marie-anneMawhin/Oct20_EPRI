@@ -18,11 +18,13 @@ def scale_general(df, scaler):
     return df_scaled, scaler
 
 # Scale a data frame using MinMaxScaler
+# Keeps index and column names
 # returns new data frame
 def scale_min_max(df):
     return scale_general(df, MinMaxScaler())
 
 # Scale a data frame using StandardScaler
+# Keeps index and column names
 # returns new data frame
 def scale_standard_scaler(df):
     return scale_general(df, StandardScaler())
