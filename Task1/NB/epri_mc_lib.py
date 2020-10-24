@@ -1,4 +1,6 @@
 
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+import pandas as pd
 
 ###################### General functions ######################
 
@@ -7,7 +9,6 @@ def add_col_TEP_plus_1(df):
 	return df
 
 # Scale a dataframe using a given scaler (not yet fit)
-# requires pandas imported as pd
 # Keeps index and column names
 # Return new dataframe, scaler
 def scale_general(df, scaler):
@@ -17,21 +18,16 @@ def scale_general(df, scaler):
     return df_scaled, scaler
 
 # Scale a data frame using MinMaxScaler
-# requires MinMaxScaler imported from sklearn.preprocessing
-# requires pandas imported as pd
 # returns new data frame
 def scale_min_max(df):
     return scale_general(df, MinMaxScaler())
 
 # Scale a data frame using StandardScaler
-# requires StandardScaler imported from sklearn.preprocessing
-# requires pandas imported as pd
 # returns new data frame
 def scale_standard_scaler(df):
     return scale_general(df, StandardScaler())
 
 # Transform a dataframe using an existing scaler
-# requires pandas imported as pd
 # Keeps index and column names
 # returns new data frame
 def transform_df(scaler, df):
@@ -44,8 +40,8 @@ def transform_df(scaler, df):
 # inputs: df- pandas data frame, 
 #         measures_list - list of column names with measured values
 #         errors_list - list of column names with error values (stdev or error, etc)
-# returns two dataframes, df_lower_boundary with errors subtracted, 
-#          df_upper_boundary with error added
+# returns two dataframes, df_lower_boundary measures with errors subtracted, 
+#          df_upper_boundary measures with error added
 def calc_error_bounds(df, measures_list, errors_list):
     df_measures = df[measures_list]
     df_errors = df[errors_list]
