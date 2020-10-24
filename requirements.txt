@@ -1,7 +1,9 @@
 jupyter==1.0.0
 jupyterlab==2.2.8
+nb-conda-kernels==2.3.0
 olefile==0.46
 pip-chill==1.0.0
+plotly==4.12.0
 scikit-learn==0.23.2
 seaborn==0.11.0
 tabula-py==2.2.0
