@@ -1,59 +1,95 @@
 
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
 import pandas as pd
 
 ###################### General functions ######################
 
-def add_col_TEP_plus_1(df):
-	df['TEP_plus_1'] = df['TEP_mean_uV_C'] + 1
-	return df
 
-# Scale a dataframe using a given scaler (not yet fit)
-# Keeps index and column names
-# Return new dataframe, scaler
 def scale_general(df, scaler):
-    df_scaled = pd.DataFrame(scaler.fit_transform(df))
-    df_scaled.columns = df.columns
-    df_scaled.index = df.index
+    ''' Scale a dataframe using a given scaler (fit and transform).
+        Keeps index and column names.
+        Return new dataframe, scaler.
+        
+        Args:
+        - df : pandas dataframe
+        - scaler : initialized sklearn scaler function
+        
+        return scaled df and fit scaler
+    '''
+    df_scaled = pd.DataFrame(scaler.fit_transform(df), columns=df.columns, index=df.index)
     return df_scaled, scaler
 
-# Scale a data frame using MinMaxScaler
-# Keeps index and column names
-# returns new data frame
-def scale_min_max(df):
-    return scale_general(df, MinMaxScaler())
 
-# Scale a data frame using StandardScaler
-# Keeps index and column names
-# returns new data frame
-def scale_standard_scaler(df):
-    return scale_general(df, StandardScaler())
-
-# Transform a dataframe using an existing scaler
-# Keeps index and column names
-# returns new data frame
-def transform_df(scaler, df):
-    df_scaled = pd.DataFrame(scaler.transform(df))
-    df_scaled.columns = df.columns
-    df_scaled.index = df.index
+def transform_df(df, scaler):
+    ''' Scale a dataframe using a fit scaler.
+        This is to prevent data leakage when the fit and transform datasets are different.
+        Keeps index and column names.
+        Return new dataframe.
+        
+        Args:
+        - df : pandas dataframe
+        - scaler : initialized and fit sklearn scaler function
+        
+        return scaled df
+    '''
+    df_scaled = pd.DataFrame(scaler.transform(df), columns=df.columns, index=df.index)
     return df_scaled
 
-# Get lower and upper error bounds of a measurement
-# inputs: df- pandas data frame, 
-#         measures_list - list of column names with measured values
-#         errors_list - list of column names with error values (stdev or error, etc)
-# returns two dataframes, df_lower_boundary measures with errors subtracted, 
-#          df_upper_boundary measures with error added
+
 def calc_error_bounds(df, measures_list, errors_list):
+    ''' Get lower and upper error bounds of a measurement in a data frame
+    Args: 
+    df: pandas dataframe containing measures and errors, 
+    measures_list: list of column names with measured values
+    errors_list: list of column names with error values (stdev or error, etc)
+
+    returns two dataframes with measures with errors subtracted (lower boundary, with suffix "_LB") 
+        and measures with error added (upper boundary, with suffix "_UB")
+    '''
     df_measures = df[measures_list]
     df_errors = df[errors_list]
     df_lower_boundary = df_measures - df_errors.values
+    df_lower_boundary = df_lower_boundary.add_suffix('_LB')
     df_upper_boundary = df_measures + df_errors.values
+    df_upper_boundary = df_upper_boundary.add_suffix('_UB')
+    
     return df_lower_boundary, df_upper_boundary
 
 
+def findAUC(df, A, B, p, f_init=8*10**6, f_end=22*10**6):
+    '''Calculate the AUC for attenuation measurement and add it to the current dataframe
+    Args:
+    - df : pandas dataframe
+    - A : A parameter as a column
+    - B : B parameter as a column
+    - p : p parameter as a column
+    - f_init : lowest value on the curve
+    - f_end : highest value on the curve
+    return updated dataframe
+    '''
 
+    def polyFunc(f):
+        return A/5*f**5 + B/3*f**3 + p*f
+    df_AUC = polyFunc(f_end) - polyFunc(f_init)
+    df_AUC = df_AUC.rename('AUC')
+    return df_AUC
+
+def updated_df(df, measures_list, errors_list):
+    data = []
+    AUC = findAUC(df, A=df['A'], B=df['B'], p=df['p'])
+    error = calc_error_bounds(df, measures_list, errors_list)
+    data = pd.concat([df, AUC, error[0], error[1]], axis=1)
+    return data
+    
+    
+    
 ###################### Lists for handling dataframes ######################
 
 drop_list_absorption_500_200 = ['Absorption_avg_500','Absorption_std_500','Absorption_avg_200','Absorption_std_200']
 drop_list_absorption_100 = ['Absorption_avg_100','Absorption_std_100']
+measures_list = ['TEP_mean_uV_C','Absorption_avg_500', 'Absorption_avg_50', 'Absorption_avg_100',
+                 'backscatter_avg', 'A', 'B', 'p', 'Absorption_avg_200']
+errors_list = [ 'TEP_error_uV_C','Absorption_std_500', 'backscatter_std',
+               'Absorption_std_50', 'A std', 'B std',
+               'p std', 'Absorption_std_100',
+               'Absorption_std_200']
+
