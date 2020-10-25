@@ -1,4 +1,3 @@
-
 import pandas as pd
 
 ###################### General functions ######################
@@ -19,6 +18,7 @@ def scale_general(df, scaler):
     return df_scaled, scaler
 
 
+# To use with test data if fitted on train data
 def transform_df(df, scaler):
     ''' Scale a dataframe using a fit scaler.
         This is to prevent data leakage when the fit and transform datasets are different.
@@ -55,7 +55,7 @@ def calc_error_bounds(df, measures_list, errors_list):
     return df_lower_boundary, df_upper_boundary
 
 
-def findAUC(df, A, B, p, f_init=8*10**6, f_end=22*10**6):
+def findAUC(df, A, B, p, f_init=8*10**6, f_end=22*10**6, name=''):
     '''Calculate the AUC for attenuation measurement and add it to the current dataframe
     Args:
     - df : pandas dataframe
@@ -64,21 +64,45 @@ def findAUC(df, A, B, p, f_init=8*10**6, f_end=22*10**6):
     - p : p parameter as a column
     - f_init : lowest value on the curve
     - f_end : highest value on the curve
+    - name : name of new column
     return updated dataframe
     '''
 
     def polyFunc(f):
         return A/5*f**5 + B/3*f**3 + p*f
     df_AUC = polyFunc(f_end) - polyFunc(f_init)
-    df_AUC = df_AUC.rename('AUC')
+    df_AUC = df_AUC.rename(name)
+    df_AUC = df_AUC.astype('float64')
     return df_AUC
 
 def updated_df(df, measures_list, errors_list):
     data = []
-    AUC = findAUC(df, A=df['A'], B=df['B'], p=df['p'])
+    AUC = findAUC(df, A=df['A'], B=df['B'], p=df['p'], name='AUC_avg')
     error = calc_error_bounds(df, measures_list, errors_list)
-    data = pd.concat([df, AUC, error[0], error[1]], axis=1)
+    AUC_LB = findAUC(error[0], A=error[0]['A_LB'], B=error[0]['B_LB'], p=error[0]['p_LB'], name='AUC_LB')
+    AUC_UB = findAUC(error[1], A=error[1]['A_UB'], B=error[1]['B_UB'], p=error[1]['p_UB'], name='AUC_UB')
+    data = pd.concat([df, error[0], error[1], AUC, AUC_LB, AUC_UB], axis=1)
     return data
+    
+def get_subsample_df(df):
+    '''Create dataframe for all 4 types of sample (tubes, pipes, tubes identified, tubes blind)
+    Args:
+    -df : pmadas dataframe
+    return df tube, pipe, tubes identifies, tubes, blind
+    '''
+    tube_df = df.copy()[df.index.str.contains('T_')]
+    tube_df.dropna(how='all', axis=1, inplace=True)
+    
+    pipe_df = df.copy()[df.index.str.contains('P_')]
+    pipe_df.dropna(how='all', axis=1, inplace=True)
+    
+    tube_wo_blind_df = df.copy()[~df.index.str.contains('T_B|P')]
+    tube_wo_blind_df.dropna(how='all', axis=1, inplace=True)
+    
+    tube_blind_df = df.copy()[df.index.str.contains('T_B')]
+    tube_blind_df.dropna(how='all', axis=1, inplace=True)
+    
+    return tube_df, pipe_df, tube_wo_blind_df, tube_blind_df
     
     
     
@@ -93,3 +117,14 @@ errors_list = [ 'TEP_error_uV_C','Absorption_std_500', 'backscatter_std',
                'p std', 'Absorption_std_100',
                'Absorption_std_200']
 
+without_std_g_list = ['TEP_mean_uV_C',  'Absorption_avg_500',
+       'backscatter_avg', 
+       'Absorption_avg_50', 'Absorption_avg_100', 
+       'Absorption_avg_200',  'median_CF', 'median_perm',
+       'median_MBN', 
+       'TEP_mean_uV_C_LB', 'Absorption_avg_500_LB', 'Absorption_avg_50_LB',
+       'Absorption_avg_100_LB', 'backscatter_avg_LB', 
+       'Absorption_avg_200_LB', 'TEP_mean_uV_C_UB', 'Absorption_avg_500_UB',
+       'Absorption_avg_50_UB', 'Absorption_avg_100_UB', 'backscatter_avg_UB',
+      'Absorption_avg_200_UB', 'AUC_avg', 'AUC_LB',
+       'AUC_UB']
