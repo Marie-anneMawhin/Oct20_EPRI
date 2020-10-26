@@ -81,7 +81,10 @@ def updated_df(df, measures_list, errors_list):
     error = calc_error_bounds(df, measures_list, errors_list)
     AUC_LB = findAUC(error[0], A=error[0]['A_LB'], B=error[0]['B_LB'], p=error[0]['p_LB'], name='AUC_LB')
     AUC_UB = findAUC(error[1], A=error[1]['A_UB'], B=error[1]['B_UB'], p=error[1]['p_UB'], name='AUC_UB')
-    data = pd.concat([df, error[0], error[1], AUC, AUC_LB, AUC_UB], axis=1)
+    CF_perm = df['median_CF']/df['median_perm']
+    CF_perm = CF_perm.rename('CF_perm')
+    CF_perm = CF_perm.astype('float64')
+    data = pd.concat([df, error[0], error[1], AUC, AUC_LB, AUC_UB, CF_perm], axis=1)
     return data
     
 def get_subsample_df(df):
@@ -111,11 +114,11 @@ def get_subsample_df(df):
 drop_list_absorption_500_200 = ['Absorption_avg_500','Absorption_std_500','Absorption_avg_200','Absorption_std_200']
 drop_list_absorption_100 = ['Absorption_avg_100','Absorption_std_100']
 measures_list = ['TEP_mean_uV_C','Absorption_avg_500', 'Absorption_avg_50', 'Absorption_avg_100',
-                 'backscatter_avg', 'A', 'B', 'p', 'Absorption_avg_200']
+                 'backscatter_avg', 'A', 'B', 'p', 'Absorption_avg_200', 'mean_CF','mean_perm', 'mean_MBN','mean_CF_g', 'mean_perm_g','mean_pMBN_g']
 errors_list = [ 'TEP_error_uV_C','Absorption_std_500', 'backscatter_std',
                'Absorption_std_50', 'A std', 'B std',
                'p std', 'Absorption_std_100',
-               'Absorption_std_200']
+               'Absorption_std_200', 'std_CF','std_perm','std_MBN','std_CF_g','std_perm_g','std_pMBN_g']
 
 without_std_g_list = ['TEP_mean_uV_C',  'Absorption_avg_500',
        'backscatter_avg', 
@@ -128,3 +131,13 @@ without_std_g_list = ['TEP_mean_uV_C',  'Absorption_avg_500',
        'Absorption_avg_50_UB', 'Absorption_avg_100_UB', 'backscatter_avg_UB',
       'Absorption_avg_200_UB', 'AUC_avg', 'AUC_LB',
        'AUC_UB']
+
+correlation_list = ['TEP_mean_uV_C', 'backscatter_avg', 'Absorption_avg_50', 'Absorption_avg_100', 
+       'AUC_avg', 'CF_perm']
+
+correlation_list_and_LB_UB = ['TEP_mean_uV_C', 'backscatter_avg', 'Absorption_avg_50', 'Absorption_avg_100', 
+       'AUC_avg', 'CF_perm', 'TEP_mean_uV_C_LB', 'Absorption_avg_50_LB',
+       'Absorption_avg_100_LB', 'backscatter_avg_LB', 'AUC_LB',
+      'TEP_mean_uV_C_UB','Absorption_avg_50_UB', 'Absorption_avg_100_UB', 'backscatter_avg_UB',
+        'AUC_UB']
+
