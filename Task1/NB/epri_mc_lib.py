@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 ###################### General functions ######################
 
@@ -108,7 +109,37 @@ def get_subsample_df(df):
     return tube_df, pipe_df, tube_wo_blind_df, tube_blind_df
     
     
+'''
+pca - fit PCA
+data - data frame of original data
+pc_i - int, first principal component to look at
+pc_j- int, second principal component to look at
+title - title for plot
+'''
+def biplot(pca, data, pc_i, pc_j,title, color='b'):
+    xvector = pca.components_[pc_i] 
+    yvector = pca.components_[pc_j]
     
+    xs = pca.transform(data)[:,pc_i] 
+    ys = pca.transform(data)[:,pc_j]
+    
+    plt.figure(figsize=(10,10))
+    for i in range(len(xvector)):
+    # arrows project features (ie columns) as vectors onto PC axes
+        plt.arrow(0, 0, xvector[i]*max(xs), yvector[i]*max(ys),
+                  color='r', width=0.0005, head_width=0.0025)
+        plt.text(xvector[i]*max(xs)*1.2, yvector[i]*max(ys)*1.2,
+                 list(data.columns.values)[i], color='r')
+    for i in range(len(xs)):
+    # circles project samples (ie rows  as points onto PC axes
+        plt.plot(xs[i], ys[i], 'bo')
+        plt.text(xs[i]*0.86, ys[i]*0.95, list(data.index)[i], color=color)
+    plt.xlabel("PC"+str(pc_i+1))
+    plt.ylabel("PC"+str(pc_j+1))
+    plt.title(title)
+    plt.show()
+
+
 ###################### Lists for handling dataframes ######################
 
 drop_list_absorption_500_200 = ['Absorption_avg_500','Absorption_std_500','Absorption_avg_200','Absorption_std_200']
