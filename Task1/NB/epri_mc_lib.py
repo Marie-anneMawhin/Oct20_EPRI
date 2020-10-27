@@ -173,10 +173,11 @@ errors_list = [ 'TEP_error_uV_C','Absorption_std_500',  'Absorption_std_50', 'Ab
 
 
 correlation_list = ['TEP_mean_uV_C', 'backscatter_avg', 'Absorption_avg_50', 'Absorption_avg_100', 
-       'CF_perm'] #missing AUC
+       'CF_perm', 'AUC_avg']
+
 
 correlation_std_list = ['TEP_error_uV_C', 'backscatter_std', 'Absorption_std_50', 'Absorption_std_100', 
-       'CF_perm_std'] # missing AUC
+       'CF_perm_std','AUC_std']
 
 feat_mean = ['TEP_mean_uV_C', 'Absorption_avg_500','backscatter_avg', 'Absorption_avg_50', 'Absorption_avg_100', 'Absorption_avg_200', 'CF_perm', 'AUC_avg']
 
