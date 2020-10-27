@@ -55,7 +55,7 @@ def calc_error_bounds(df, measures_list, errors_list):
     return df_lower_boundary, df_upper_boundary
 
 
-def findAUC(df, A, B, p, f_init=8*10**6, f_end=22*10**6, name=''):
+def findAUC(df, A, B, p, f_init=8, f_end=22, name=''):
     '''Calculate the AUC for attenuation measurement and add it to the current dataframe
     Args:
     - df : pandas dataframe
