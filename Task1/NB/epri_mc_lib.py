@@ -110,16 +110,17 @@ def get_subsample_df(df):
     tube_blind_df.dropna(how='all', axis=1, inplace=True)
     
     return tube_df, pipe_df, tube_wo_blind_df, tube_blind_df
-    
-    
-'''
-pca - fit PCA
-data - data frame of original data
-pc_i - int, first principal component to look at
-pc_j- int, second principal component to look at
-title - title for plot
-'''
+ 
+
 def biplot(pca, data, pc_i, pc_j,title, color='b'):
+    '''
+    pca - fit PCA
+    data - data frame of original data
+    pc_i - int, first principal component to look at
+    pc_j- int, second principal component to look at
+    title - title for plot
+    color - optional, if passed should be a dict that maps the index to colors
+    '''
     xvector = pca.components_[pc_i] 
     yvector = pca.components_[pc_j]
     
@@ -133,10 +134,15 @@ def biplot(pca, data, pc_i, pc_j,title, color='b'):
                   color='r', width=0.0005, head_width=0.0025)
         plt.text(xvector[i]*max(xs)*1.2, yvector[i]*max(ys)*1.2,
                  list(data.columns.values)[i], color='r')
-    for i in range(len(xs)):
-    # circles project samples (ie rows  as points onto PC axes
-        plt.plot(xs[i], ys[i], 'bo')
-        plt.text(xs[i]*0.86, ys[i]*0.95, list(data.index)[i], color=color)
+    # Each point is plotted if no color is given
+    if color == 'b':
+        for i in range(len(xs)):
+        # circles project samples (ie rows  as points onto PC axes
+            plt.plot(xs[i], ys[i], 'bo')
+            plt.text(xs[i]*0.86, ys[i]*0.95, list(data.index)[i], color=color)
+    # color passed in should be a dict that maps the index to colors
+    else:
+        plt.scatter(xs, ys, color=[ color[i] for i in data.index ])
     plt.xlabel("PC"+str(pc_i+1))
     plt.ylabel("PC"+str(pc_j+1))
     plt.title(title)
@@ -147,6 +153,8 @@ def biplot(pca, data, pc_i, pc_j,title, color='b'):
 
 drop_list_absorption_500_200 = ['Absorption_avg_500','Absorption_std_500','Absorption_avg_200','Absorption_std_200']
 drop_list_absorption_100 = ['Absorption_avg_100','Absorption_std_100']
+drop_list_tube_std = ['TEP_error_uV_C', 'backscatter_std', 'Absorption_std_50', 'A std', 'B std',
+       'p std', 'Absorption_std_100', 'std_CF', 'std_perm','std_MBN']
 measures_list = ['TEP_mean_uV_C','Absorption_avg_500', 'Absorption_avg_50', 'Absorption_avg_100',
                  'backscatter_avg', 'A', 'B', 'p', 'Absorption_avg_200', 'mean_CF','mean_perm', 'mean_MBN','mean_CF_g', 'mean_perm_g','mean_pMBN_g']
 errors_list = [ 'TEP_error_uV_C','Absorption_std_500', 'backscatter_std',
@@ -154,17 +162,12 @@ errors_list = [ 'TEP_error_uV_C','Absorption_std_500', 'backscatter_std',
                'p std', 'Absorption_std_100',
                'Absorption_std_200', 'std_CF','std_perm','std_MBN','std_CF_g','std_perm_g','std_pMBN_g']
 
-without_std_g_list = ['TEP_mean_uV_C',  'Absorption_avg_500',
-       'backscatter_avg', 
-       'Absorption_avg_50', 'Absorption_avg_100', 
-       'Absorption_avg_200',  'median_CF', 'median_perm',
-       'median_MBN', 
-       'TEP_mean_uV_C_LB', 'Absorption_avg_500_LB', 'Absorption_avg_50_LB',
-       'Absorption_avg_100_LB', 'backscatter_avg_LB', 
-       'Absorption_avg_200_LB', 'TEP_mean_uV_C_UB', 'Absorption_avg_500_UB',
-       'Absorption_avg_50_UB', 'Absorption_avg_100_UB', 'backscatter_avg_UB',
-      'Absorption_avg_200_UB', 'AUC_avg', 'AUC_LB',
-       'AUC_UB']
+without_std_g_list = ['TEP_mean_uV_C',  'Absorption_avg_500','backscatter_avg', 
+       'Absorption_avg_50', 'Absorption_avg_100', 'Absorption_avg_200',  'median_CF', 'median_perm',
+       'median_MBN', 'TEP_mean_uV_C_LB', 'Absorption_avg_500_LB', 'Absorption_avg_50_LB',
+       'Absorption_avg_100_LB', 'backscatter_avg_LB', 'Absorption_avg_200_LB', 'TEP_mean_uV_C_UB', 
+       'Absorption_avg_500_UB','Absorption_avg_50_UB', 'Absorption_avg_100_UB', 'backscatter_avg_UB',
+       'Absorption_avg_200_UB', 'AUC_avg', 'AUC_LB', 'AUC_UB']
 
 correlation_list = ['TEP_mean_uV_C', 'backscatter_avg', 'Absorption_avg_50', 'Absorption_avg_100', 
        'CF_perm'] #missing AUC
