@@ -79,15 +79,24 @@ def updated_df(df, measures_list, errors_list):
     data = []
     AUC = findAUC(df, A=df['A'], B=df['B'], p=df['p'], name='AUC_avg')
     error = calc_error_bounds(df, measures_list, errors_list)
+    
+    AUC = findAUC(df, A=df['A'], B=df['B'], p=df['p'], name='AUC_avg')
     AUC_LB = findAUC(error[0], A=error[0]['A_LB'], B=error[0]['B_LB'], p=error[0]['p_LB'], name='AUC_LB')
     AUC_UB = findAUC(error[1], A=error[1]['A_UB'], B=error[1]['B_UB'], p=error[1]['p_UB'], name='AUC_UB')
+    
+    AUC_STD = (AUC_UB - AUC_LB)*0.5
+    AUC_STD = AUC_STD.rename('AUC_std')
+    AUC_STD = AUC_STD.astype('float64')
+
     CF_perm = df['mean_CF']/df['mean_perm']
     CF_perm = CF_perm.rename('CF_perm')
     CF_perm = CF_perm.astype('float64')
+    
     CF_perm_std = df['std_CF']/df['std_perm']
     CF_perm_std = CF_perm_std.rename('CF_perm_std')
     CF_perm_std = CF_perm_std.astype('float64')
-    data = pd.concat([df, error[0], error[1], AUC, AUC_LB, AUC_UB, CF_perm, CF_perm_std], axis=1)
+    
+    data = pd.concat([df, error[0], error[1], AUC, AUC_LB, AUC_UB, AUC_STD, CF_perm, CF_perm_std], axis=1)
     return data
     
 def get_subsample_df(df):
@@ -115,25 +124,14 @@ def get_subsample_df(df):
 ###################### Lists for handling dataframes ######################
 
 drop_list_absorption_500_200 = ['Absorption_avg_500','Absorption_std_500','Absorption_avg_200','Absorption_std_200']
+
 drop_list_absorption_100 = ['Absorption_avg_100','Absorption_std_100']
+
 measures_list = ['TEP_mean_uV_C','Absorption_avg_500', 'Absorption_avg_50', 'Absorption_avg_100',
                  'backscatter_avg', 'A', 'B', 'p', 'Absorption_avg_200', 'mean_CF','mean_perm', 'mean_MBN','mean_CF_g', 'mean_perm_g','mean_pMBN_g']
-errors_list = [ 'TEP_error_uV_C','Absorption_std_500', 'backscatter_std',
-               'Absorption_std_50', 'A std', 'B std',
-               'p std', 'Absorption_std_100',
-               'Absorption_std_200', 'std_CF','std_perm','std_MBN','std_CF_g','std_perm_g','std_pMBN_g']
 
-without_std_g_list = ['TEP_mean_uV_C',  'Absorption_avg_500',
-       'backscatter_avg', 
-       'Absorption_avg_50', 'Absorption_avg_100', 
-       'Absorption_avg_200',  'median_CF', 'median_perm',
-       'median_MBN', 
-       'TEP_mean_uV_C_LB', 'Absorption_avg_500_LB', 'Absorption_avg_50_LB',
-       'Absorption_avg_100_LB', 'backscatter_avg_LB', 
-       'Absorption_avg_200_LB', 'TEP_mean_uV_C_UB', 'Absorption_avg_500_UB',
-       'Absorption_avg_50_UB', 'Absorption_avg_100_UB', 'backscatter_avg_UB',
-      'Absorption_avg_200_UB', 'AUC_avg', 'AUC_LB',
-       'AUC_UB']
+errors_list = [ 'TEP_error_uV_C','Absorption_std_500',  'Absorption_std_50', 'Absorption_std_100', 'backscatter_std', 'A std', 'B std', 'p std', 'Absorption_std_200', 'std_CF','std_perm','std_MBN','std_CF_g','std_perm_g','std_pMBN_g']
+
 
 correlation_list = ['TEP_mean_uV_C', 'backscatter_avg', 'Absorption_avg_50', 'Absorption_avg_100', 
        'CF_perm'] #missing AUC
@@ -141,15 +139,18 @@ correlation_list = ['TEP_mean_uV_C', 'backscatter_avg', 'Absorption_avg_50', 'Ab
 correlation_std_list = ['TEP_error_uV_C', 'backscatter_std', 'Absorption_std_50', 'Absorption_std_100', 
        'CF_perm_std'] # missing AUC
 
-correlation_list_and_LB_UB = ['TEP_mean_uV_C', 'backscatter_avg', 'Absorption_avg_50', 'Absorption_avg_100', 
-       'AUC_avg', 'CF_perm', 'TEP_mean_uV_C_LB', 'Absorption_avg_50_LB',
-       'Absorption_avg_100_LB', 'backscatter_avg_LB', 'AUC_LB',
-      'TEP_mean_uV_C_UB','Absorption_avg_50_UB', 'Absorption_avg_100_UB', 'backscatter_avg_UB',
-        'AUC_UB']
+feat_mean = ['TEP_mean_uV_C', 'Absorption_avg_500','backscatter_avg', 'Absorption_avg_50', 'Absorption_avg_100', 'Absorption_avg_200', 'CF_perm', 'AUC_avg']
+
+feat_stds = ['TEP_error_uV_C', 'Absorption_std_500','backscatter_std','Absorption_std_50', 
+    'Absorption_std_100','Absorption_std_200', 'CF_perm_std', 'AUC_std']
+
+
 
 data_generation_values = ['TEP_mean_uV_C', 'Absorption_avg_500','backscatter_avg', 
        'Absorption_avg_50', 'A', 'B', 'p', 'Absorption_avg_100', 
        'Absorption_avg_200', 'meam_CF', 'mean_perm', 'mean_MBN']
+
 data_generation_stds = ['TEP_error_uV_C', 'Absorption_std_500','backscatter_std','Absorption_std_50', 
     'A std','B std','p std', 'Absorption_std_100','Absorption_std_200', 'std_CF','std_perm', 'std_MBN',
     'std_CF_g']
+
