@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 ###################### General functions ######################
 
@@ -118,9 +119,9 @@ def get_subsample_df(df):
     tube_blind_df.dropna(how='all', axis=1, inplace=True)
     
     return tube_df, pipe_df, tube_wo_blind_df, tube_blind_df
-    
-    
-    
+ 
+
+
 ###################### Lists for handling dataframes ######################
 
 drop_list_absorption_500_200 = ['Absorption_avg_500','Absorption_std_500','Absorption_avg_200','Absorption_std_200']
@@ -131,6 +132,7 @@ measures_list = ['TEP_mean_uV_C','Absorption_avg_500', 'Absorption_avg_50', 'Abs
                  'backscatter_avg', 'A', 'B', 'p', 'Absorption_avg_200', 'mean_CF','mean_perm', 'mean_MBN','mean_CF_g', 'mean_perm_g','mean_pMBN_g']
 
 errors_list = [ 'TEP_error_uV_C','Absorption_std_500',  'Absorption_std_50', 'Absorption_std_100', 'backscatter_std', 'A std', 'B std', 'p std', 'Absorption_std_200', 'std_CF','std_perm','std_MBN','std_CF_g','std_perm_g','std_pMBN_g']
+
 
 
 correlation_list = ['TEP_mean_uV_C', 'backscatter_avg', 'Absorption_avg_50', 'Absorption_avg_100', 
