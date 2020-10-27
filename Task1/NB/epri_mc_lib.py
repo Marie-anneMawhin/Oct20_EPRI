@@ -150,7 +150,7 @@ feat_stds = ['TEP_error_uV_C', 'Absorption_std_500','backscatter_std','Absorptio
 
 data_generation_values = ['TEP_mean_uV_C', 'Absorption_avg_500','backscatter_avg', 
        'Absorption_avg_50', 'A', 'B', 'p', 'Absorption_avg_100', 
-       'Absorption_avg_200', 'meam_CF', 'mean_perm', 'mean_MBN']
+       'Absorption_avg_200', 'mean_CF', 'mean_perm', 'mean_MBN']
 
 data_generation_stds = ['TEP_error_uV_C', 'Absorption_std_500','backscatter_std','Absorption_std_50', 
     'A std','B std','p std', 'Absorption_std_100','Absorption_std_200', 'std_CF','std_perm', 'std_MBN',
