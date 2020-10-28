@@ -202,4 +202,4 @@ data_generation_stds = ['TEP_error_uV_C', 'Absorption_std_500','backscatter_std'
     'A std','B std','p std', 'Absorption_std_100','Absorption_std_200', 'std_CF','std_perm', 'std_MBN',
     'std_CF_g']
 
-minimal_informative_features = ["TEP_mean_uV_C","Absorption_avg_50","mean_perm","AUC_avg","backscatter_avg"]
+minimal_informative_features = ["Absorption_avg_50","CF_perm","AUC_avg","backscatter_avg"]
