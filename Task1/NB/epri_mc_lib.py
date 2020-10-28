@@ -121,7 +121,7 @@ def get_subsample_df(df):
     return tube_df, pipe_df, tube_wo_blind_df, tube_blind_df
  
 
-def biplot(pca, data, pc_i, pc_j,title, color='b'):
+def biplot(pca, data, pc_i, pc_j,title, color='b', plot_vectors=True):
     '''
     pca - fit PCA
     data - data frame of original data
@@ -137,12 +137,13 @@ def biplot(pca, data, pc_i, pc_j,title, color='b'):
     ys = pca.transform(data)[:,pc_j]
     
     plt.figure(figsize=(10,10))
-    for i in range(len(xvector)):
-    # arrows project features (ie columns) as vectors onto PC axes
-        plt.arrow(0, 0, xvector[i]*max(xs), yvector[i]*max(ys),
-            color='r', width=0.0005, head_width=0.0025)
-        plt.text(xvector[i]*max(xs)*1.2, yvector[i]*max(ys)*1.2,
-            list(data.columns.values)[i], color='r',
+    if plot_vectors:
+        for i in range(len(xvector)):
+        # arrows project features (ie columns) as vectors onto PC axes
+            plt.arrow(0, 0, xvector[i]*max(xs), yvector[i]*max(ys),
+                color='r', width=0.0005, head_width=0.0025)
+            plt.text(xvector[i]*max(xs)*1.2, yvector[i]*max(ys)*1.2,
+                list(data.columns.values)[i], color='r',
             bbox={'facecolor': 'white', 'alpha': 0.8, 'pad': 10})
     # Each point is plotted if no color is given
     if color == 'b':
@@ -153,6 +154,8 @@ def biplot(pca, data, pc_i, pc_j,title, color='b'):
     # color passed in should be a dict that maps the index to colors
     else:
         plt.scatter(xs, ys, color=[ color[i] for i in data.index ])
+        markers = [plt.Line2D([0,0],[0,0],color=c, marker='o', linestyle='') for c in color.values()]
+        plt.legend(markers, color.keys(), loc='upper right', numpoints=1)
     plt.xlabel("PC"+str(pc_i+1))
     plt.ylabel("PC"+str(pc_j+1))
     plt.title(title)
@@ -178,6 +181,11 @@ correlation_list = ['TEP_mean_uV_C', 'backscatter_avg', 'Absorption_avg_50', 'Ab
 
 correlation_std_list = ['TEP_error_uV_C', 'backscatter_std', 'Absorption_std_50', 'Absorption_std_100', 
        'CF_perm_std','AUC_std']
+
+feat_mean2 = ['TEP_mean_uV_C', 'Absorption_avg_500','backscatter_avg', 'Absorption_avg_50', 'Absorption_avg_100', 'Absorption_avg_200', 'mean_CF', 'mean_perm', 'AUC_avg']
+
+feat_stds2 = ['TEP_error_uV_C', 'Absorption_std_500','backscatter_std','Absorption_std_50', 
+    'Absorption_std_100','Absorption_std_200', 'std_CF', 'std_perm', 'AUC_std']
 
 feat_mean = ['TEP_mean_uV_C', 'Absorption_avg_500','backscatter_avg', 'Absorption_avg_50', 'Absorption_avg_100', 'Absorption_avg_200', 'CF_perm', 'AUC_avg']
 
