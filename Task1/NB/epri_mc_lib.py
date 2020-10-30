@@ -189,10 +189,10 @@ feat_mean2 = ['TEP_mean_uV_C', 'Absorption_avg_500','backscatter_avg', 'Absorpti
 feat_stds2 = ['TEP_error_uV_C', 'Absorption_std_500','backscatter_std','Absorption_std_50', 
     'Absorption_std_100','Absorption_std_200', 'std_CF', 'std_perm', 'AUC_std']
 
-feat_mean = ['TEP_mean_uV_C', 'Absorption_avg_500','backscatter_avg', 'Absorption_avg_50', 'Absorption_avg_100', 'Absorption_avg_200', 'CF_perm', 'AUC_avg']
+feat_mean = ['TEP_mean_uV_C', 'backscatter_avg', 'Absorption_avg_50', 'Absorption_avg_100', 'mean_CF', 'mean_perm', 'mean_MBN', 'AUC_avg']
 
-feat_stds = ['TEP_error_uV_C', 'Absorption_std_500','backscatter_std','Absorption_std_50', 
-    'Absorption_std_100','Absorption_std_200', 'CF_perm_std', 'AUC_std']
+feat_stds = ['TEP_error_uV_C', 'backscatter_std','Absorption_std_50', 
+    'Absorption_std_100', 'std_CF','std_perm', 'std_MBN','AUC_std']
 
 
 data_generation_values = ['TEP_mean_uV_C', 'Absorption_avg_500','backscatter_avg', 
