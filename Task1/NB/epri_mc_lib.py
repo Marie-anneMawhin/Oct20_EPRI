@@ -2,6 +2,20 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 ###################### General functions ######################
+def get_c (df):
+    '''test linkage and metric for HAC using the cophenetic correlation coefficient '''
+    results = []
+    for linkage_name in ['single', 'average', 'weighted', 'centroid', 'median', 'ward']:
+        for metric_name in ['chebyshev', 'cityblock', 'cosine', 'euclidean', 'minkowski', 'sqeuclidean']:
+            try:
+                Z = hierarchy.linkage(df, method=linkage_name, metric=metric_name)
+            except ValueError:
+                pass
+            c, coph_dists = hierarchy.cophenet(Z, pdist(df, metric_name))
+
+            results.append([linkage_name, metric_name, c])
+    data = pd.DataFrame(results, columns=['linkage', 'distance metric', 'C']).sort_values('C', ascending=False)
+    return data
 
 
 def scale_general(df, scaler):
