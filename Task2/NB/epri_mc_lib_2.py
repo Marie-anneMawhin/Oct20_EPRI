@@ -118,3 +118,6 @@ def biplot(pca, data, pc_i, pc_j,title, color='b', plot_vectors=True):
 
 
 ###################### Lists for handling dataframes ######################
+
+error_cols = ["MS_neg_error", "MS_pos_error", "TEP_error"]
+regression_cols = ["KJIC", "MS_Avg", "TEP_average", "Beta_avg", "PC_IF_2.25MHz", "PC_IF_3.5MHz", "PC_BS", "cold_work"]
