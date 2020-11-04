@@ -137,4 +137,4 @@ def load_data(path):
 ###################### Lists for handling dataframes ######################
 
 error_cols = ["MS_neg_error", "MS_pos_error", "TEP_error"]
-regression_cols = ['KJIC', 'log_beta_avg', 'TEP_average', 'log_beta_avg', 'PC_IF_2.25MHz', 'PC_IF_3.5MHz','PC_BS']
+regression_cols = ['KJIC', 'log_beta_avg', 'TEP_average', 'log_MS_Avg', 'PC_IF_2.25MHz', 'PC_IF_3.5MHz','PC_BS']
