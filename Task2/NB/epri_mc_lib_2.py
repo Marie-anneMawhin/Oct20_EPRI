@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 
-
 ###################### General functions ######################
 
 def scale_general(df, scaler):
@@ -119,17 +118,23 @@ def biplot(pca, data, pc_i, pc_j,title, color='b', plot_vectors=True):
     plt.title(title)
     plt.show()
 
-def load_data(df):
+def load_data(path):
     '''
     load_data for consistency columns in analyses.
+    - path : path to csv file
+
     '''
+    df = pd.read_csv(path, index_col=0)
+    df['log_MS_Avg'] = np.log(df['MS_Avg'])
     df['log_beta_avg'] = np.log(df['Beta_avg'])
-    df.drop(columns=['Type', 'Beta_avg'], inplace=True)
+    
+    df.drop(columns=['Beta_avg', 'MS_Avg'], inplace=True)
     df = df.loc[:, regression_cols]
     df = scale_general(df, MinMaxScaler())[0]
-    return df[regression_cols]
+    return df
+
 
 ###################### Lists for handling dataframes ######################
 
 error_cols = ["MS_neg_error", "MS_pos_error", "TEP_error"]
-regression_cols = ['KJIC', 'MS_Avg', 'TEP_average', 'log_beta_avg', 'PC_IF_2.25MHz', 'PC_IF_3.5MHz','PC_BS']
+regression_cols = ['KJIC', 'log_beta_avg', 'TEP_average', 'log_beta_avg', 'PC_IF_2.25MHz', 'PC_IF_3.5MHz','PC_BS']
