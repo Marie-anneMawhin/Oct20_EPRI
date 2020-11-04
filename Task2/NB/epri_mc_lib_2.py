@@ -1,5 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
+
+from sklearn.preprocessing import MinMaxScaler
 
 ###################### General functions ######################
 
@@ -116,15 +119,18 @@ def biplot(pca, data, pc_i, pc_j,title, color='b', plot_vectors=True):
     plt.title(title)
     plt.show()
 
-def load_data(filename):
+def load_data(path):
 	'''
 	load_data for consistency columns in analyses.
+	- path : path to csv file
 	'''
-	df = pd.read_csv(filename, index_col=0)
+	df = pd.read_csv(path, index_col=0)
 	df['log_beta_avg'] = np.log(df['Beta_avg'])
-	df.drop(columns=['type_cw', 'Beta_avg'], inplace=True)
+	df['log_MS_Avg'] = np.log(df['MS_Avg'])
+	
+	df.drop(columns=['type_cw', 'Beta_avg', 'MS_Avg'], inplace=True)
 	scaling_cols = df.columns.difference(['KJIC', 'Type'])
-	df[scaling_cols] = mc.scale_general(df[scaling_cols], MinMaxScaler())[0]
+	df[scaling_cols] = scale_general(df[scaling_cols], MinMaxScaler())[0]
 	return df
 
 
