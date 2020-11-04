@@ -124,7 +124,7 @@ def load_data(path):
     - path : path to csv file
 
     '''
-    df = pd.read_csv(path, index_col=0)
+    df = pd.read_csv(path, index_col=-2)
     df['log_MS_Avg'] = np.log(df['MS_Avg'])
     df['log_beta_avg'] = np.log(df['Beta_avg'])
     
