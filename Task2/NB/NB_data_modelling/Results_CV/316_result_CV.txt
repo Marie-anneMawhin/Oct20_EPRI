@@ -1,0 +1,2 @@
+[ElasticNet(alpha=0, l1_ratio=0), DecisionTreeRegressor(criterion='friedman_mse', max_depth=6,
+                      max_features='log2'), KNeighborsRegressor(algorithm='ball_tree', n_neighbors=20, weights='distance'), SVR(C=1), RandomForestRegressor(max_depth=8, max_features='sqrt', n_estimators=150)]
