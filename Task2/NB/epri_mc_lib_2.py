@@ -1,5 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler
+
 
 ###################### General functions ######################
 
@@ -117,19 +120,16 @@ def biplot(pca, data, pc_i, pc_j,title, color='b', plot_vectors=True):
     plt.show()
 
 def load_data(df):
-	'''
-	load_data for consistency columns in analyses.
-	'''
-	df['log_beta_avg'] = np.log(df['Beta_avg'])
-	df.drop(columns=['type_cw', 'Beta_avg'], inplace=True)
-	scaling_cols = df.columns.difference(['KJIC', 'Type'])
-	df[scaling_cols] = mc.scale_general(df[scaling_cols], MinMaxScaler())[0]
-	return df
-
-
-
+    '''
+    load_data for consistency columns in analyses.
+    '''
+    df['log_beta_avg'] = np.log(df['Beta_avg'])
+    df.drop(columns=['Type', 'Beta_avg'], inplace=True)
+    df = df.loc[:, regression_cols]
+    df = scale_general(df, MinMaxScaler())[0]
+    return df[regression_cols]
 
 ###################### Lists for handling dataframes ######################
 
 error_cols = ["MS_neg_error", "MS_pos_error", "TEP_error"]
-regression_cols = ["KJIC", "MS_Avg", "TEP_average", "Beta_avg", "PC_IF_2.25MHz", "PC_IF_3.5MHz", "PC_BS", "cold_work"]
+regression_cols = ['KJIC', 'MS_Avg', 'TEP_average', 'log_beta_avg', 'PC_IF_2.25MHz', 'PC_IF_3.5MHz','PC_BS']
