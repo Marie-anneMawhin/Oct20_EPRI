@@ -116,10 +116,11 @@ def biplot(pca, data, pc_i, pc_j,title, color='b', plot_vectors=True):
     plt.title(title)
     plt.show()
 
-def load_data(df):
+def load_data(filename):
 	'''
 	load_data for consistency columns in analyses.
 	'''
+	df = pd.read_csv(filename, index_col=0)
 	df['log_beta_avg'] = np.log(df['Beta_avg'])
 	df.drop(columns=['type_cw', 'Beta_avg'], inplace=True)
 	scaling_cols = df.columns.difference(['KJIC', 'Type'])
