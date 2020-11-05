@@ -119,32 +119,32 @@ def biplot(pca, data, pc_i, pc_j,title, color='b', plot_vectors=True):
     plt.title(title)
     plt.show()
 
-def load_data(path):
+def load_data(path, scaler):
     '''
     load_data for consistency columns in analyses.
+    Args:
     - path : path to csv file
+    - scaler :sklearn scaler
 
     '''
 
-    df = pd.read_csv(path, index_col=-2)
+    df = pd.read_csv(path, index_col=-1)
     df['log_MS_Avg'] = np.log(df['MS_Avg'])
     df['log_beta_avg'] = np.log(df['Beta_avg'])    
     df.drop(columns=['Beta_avg', 'MS_Avg'], inplace=True)
     df = df.loc[:, regression_cols]
-
-    X_train, y_train, X_test, y_test = train_test_split(df.drop(columns=['KJIC']), 
+    X_train, X_test, y_train, y_test = train_test_split(df.drop(columns=['KJIC']), 
                                                                 df['KJIC'], 
                                                                 test_size=0.2, 
                                                                 random_state=2020)
-
-    X_train, scaler = scale_general(X_train, MinMaxScaler())[0]
+    X_train, scaler = scale_general(X_train, scaler)
     X_test = scaler.transform(X_test)
-    return X_train, y_train, X_test, y_test
+    return  X_train, X_test, y_train, y_test
 
 
 ###################### Lists for handling dataframes ######################
 
 error_cols = ["MS_neg_error", "MS_pos_error", "TEP_error"]
-regression_cols = ['KJIC', 'log_beta_avg', 'TEP_average', 'log_MS_Avg', 'PC_IF_2.25MHz', 'PC_IF_3.5MHz','PC_BS']
-regression_cols_real_data = ['KJIC', 'TEP_average', 'PC_IF_2.25MHz', 'PC_IF_3.5MHz','PC_BS']
-simulated_regression_cols = ["KJIC", "MS_Avg", "TEP_average", "Beta_avg", "PC_IF_2.25MHz", "PC_IF_3.5MHz", "PC_BS", 'Type','type_cw']
+regression_cols = ['KJIC', 'log_beta_avg', 'TEP_average', 'log_MS_Avg', 'IF_amp_2.25MHz', 'IF_amp_3.5MHz','BS_amp']
+regression_cols_real_data = ['KJIC', 'TEP_average', 'IF_amp_2.25MHz', 'IF_amp_3.5MHz','BS_amp']
+simulated_regression_cols = ['KJIC', 'log_beta_avg', 'TEP_average', 'log_MS_Avg', 'IF_amp_2.25MHz', 'IF_amp_3.5MHz','BS_amp', 'Type','type_cw']
