@@ -138,7 +138,7 @@ def load_data(path, scaler):
                                                                 test_size=0.2, 
                                                                 random_state=2020)
     X_train, scaler = scale_general(X_train, scaler)
-    X_test = scaler.transform(X_test)
+    X_test = pd.DataFrame(scaler.transform(X_test), columns=X_test.columns, index=X_test.index)
     return  X_train, X_test, y_train, y_test
 
 
