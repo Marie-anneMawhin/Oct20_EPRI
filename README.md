@@ -10,8 +10,20 @@ This project, EPRI, contains 3 sub-projects in this repo.
 The main objective of this project is to build a system or algorithm which is able to identify failures of steel grades 91 and 92 as well as other unseen steel grades by using non-destructive evaluation (NDE) techniques. The current NDE method is hardness test which lacks meaningful results and measurement quality. It is found that the microstructures of the steel as well as operational conditions play a significant role in failures.
 
 ## Microstructure Characterization (Task1)
-The first task is to understand responses of different microstructures given NDE methods - Magnetic, Ultrasonics, and Thermo-electric techniques. This will allow us to cluster steels which give NDE responses in the same manner.
+The first task is to understand responses of different microstructures given NDE methods - Magnetic, Ultrasonics, and Thermo-electric power techniques. This will allow us to cluster steels which give NDE responses in the same manner.
+Small size experimental data was given for a total of 24 specimens 16 tubes and 8 pipes. The tube sample was split in two sections 8 known tube MC and 8 unknow tube MC. The pipe sample had missing data for the unknown MC. The project proceeded using the tube sample for modelling and analysis.
+Simuluated data was generated to account for measuements uncertainties and better clustering.
 
+The objectives of this subproject was to:
+- identify features that have high influence on the clustering of specimens based on their MC
+- explore various unsupervised learning models
+- consider measurement errors in models
+- find consensus between different techniques on clustering groups for the tube specimens
+
+Clustering techniques used:
+- Hierarchical Clustering 
+- K-Means Clustering
+- K-Means Clustering on PCA plots
 
 
 ## Fracture Toughness
