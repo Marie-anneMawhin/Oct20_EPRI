@@ -138,3 +138,4 @@ def load_data(path):
 
 error_cols = ["MS_neg_error", "MS_pos_error", "TEP_error"]
 regression_cols = ['KJIC', 'log_beta_avg', 'TEP_average', 'log_MS_Avg', 'PC_IF_2.25MHz', 'PC_IF_3.5MHz','PC_BS']
+regression_cols_real_data = ['KJIC', 'TEP_average', 'PC_IF_2.25MHz', 'PC_IF_3.5MHz','PC_BS']
