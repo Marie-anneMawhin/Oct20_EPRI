@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
 
 ###################### General functions ######################
 
@@ -124,14 +125,21 @@ def load_data(path):
     - path : path to csv file
 
     '''
+
     df = pd.read_csv(path, index_col=-2)
     df['log_MS_Avg'] = np.log(df['MS_Avg'])
-    df['log_beta_avg'] = np.log(df['Beta_avg'])
-    
+    df['log_beta_avg'] = np.log(df['Beta_avg'])    
     df.drop(columns=['Beta_avg', 'MS_Avg'], inplace=True)
     df = df.loc[:, regression_cols]
-    df = scale_general(df, MinMaxScaler())[0]
-    return df
+
+    X_train, y_train, X_test, y_test = train_test_split(df.drop(columns=['KJIC']), 
+                                                                df['KJIC'], 
+                                                                test_size=0.2, 
+                                                                random_state=2020)
+
+    X_train, scaler = scale_general(X_train, MinMaxScaler())[0]
+    X_test = scaler.transform(X_test)
+    return X_train, y_train, X_test, y_test
 
 
 ###################### Lists for handling dataframes ######################

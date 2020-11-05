@@ -1,1 +1,0 @@
-[[('Elastic', {'alpha': 0, 'l1_ratio': 0})], [('Tree', {'criterion': 'mae', 'max_depth': 5, 'max_features': 'sqrt'})], [('KNN', {'algorithm': 'ball_tree', 'n_neighbors': 20, 'weights': 'distance'})], [('SVM', {'C': 0.5, 'kernel': 'rbf'})], [('RF', {'criterion': 'mse', 'max_depth': 6, 'max_features': 'log2', 'n_estimators': 150})]]
