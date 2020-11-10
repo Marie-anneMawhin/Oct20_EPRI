@@ -24,12 +24,19 @@ Clustering techniques used:
 - Hierarchical Clustering 
 - K-Means Clustering
 - K-Means Clustering on PCA plots
+- Sklearn library exploration
 
 
 ## Fracture Toughness
-Lorem ipsum
+The purpose of this project is to design a combined approach that uses magnetic, ultrasonic, and thermoelectric power NDE techniques to better predict fracture toughness related to component failure.
 
+The objectives of this subproject was to:
+- predict fracture toughness using various NDE measurements and using different models
 
+Technic used:
+- Data augmentation with CopulaGAN
+- Regression using sklearn library
+- GridSearch CV for hyperparameter tuning
 
 ## Early Stage Fatigue Detection
 Lorem ipsum

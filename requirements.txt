@@ -5,6 +5,7 @@ nb-conda-kernels==2.3.0
 olefile==0.46
 pip-chill==1.0.0
 plotly==4.12.0
+scikit-optimize==0.8.1
 streamlit==0.69.2
 tabula-py==2.2.0
 threadpoolctl==2.1.0
