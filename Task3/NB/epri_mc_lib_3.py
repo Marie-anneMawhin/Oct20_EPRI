@@ -144,7 +144,3 @@ def load_data(path, scaler):
 
 ###################### Lists for handling dataframes ######################
 
-error_cols = ["MS_neg_error", "MS_pos_error", "TEP_error"]
-regression_cols = ['KJIC', 'log_beta_avg', 'TEP_average', 'log_MS_Avg', 'IF_amp_2.25MHz', 'IF_amp_3.5MHz','BS_amp']
-regression_cols_real_data = ['KJIC', 'TEP_average', 'IF_amp_2.25MHz', 'IF_amp_3.5MHz','BS_amp']
-simulated_regression_cols = ['KJIC', 'log_beta_avg', 'TEP_average', 'log_MS_Avg', 'IF_amp_2.25MHz', 'IF_amp_3.5MHz','BS_amp', 'Type','type_cw']
