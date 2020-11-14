@@ -2,6 +2,7 @@ ctgan==0.2.1
 fastcache==1.1.0
 jupyter==1.0.0
 jupyterlab==2.2.8
+lifelines==0.25.6
 mkl-fft==1.2.0
 mkl-random==1.1.1
 mkl-service==2.3.0
