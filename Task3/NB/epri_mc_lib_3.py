@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
+import seaborn as sns
 
 ###################### General functions ######################
 
@@ -95,14 +96,6 @@ def biplot(pca, data, pc_i, pc_j,title, color='b', plot_vectors=True):
     ys = pca.transform(data)[:,pc_j]
     
     plt.figure(figsize=(10,10))
-    if plot_vectors:
-        for i in range(len(xvector)):
-        # arrows project features (ie columns) as vectors onto PC axes
-            plt.arrow(0, 0, xvector[i]*max(xs), yvector[i]*max(ys),
-                color='r', width=0.0005, head_width=0.0025)
-            plt.text(xvector[i]*max(xs)*1.2, yvector[i]*max(ys)*1.2,
-                list(data.columns.values)[i], color='r',
-            bbox={'facecolor': 'white', 'alpha': 0.8, 'pad': 10})
     # Each point is plotted if no color is given
     if color == 'b':
         for i in range(len(xs)):
@@ -114,6 +107,14 @@ def biplot(pca, data, pc_i, pc_j,title, color='b', plot_vectors=True):
         plt.scatter(xs, ys, color=[ color[i] for i in data.index ])
         markers = [plt.Line2D([0,0],[0,0],color=c, marker='o', linestyle='') for c in color.values()]
         plt.legend(markers, color.keys(), loc='upper right', numpoints=1)
+    if plot_vectors:
+        for i in range(len(xvector)):
+        # arrows project features (ie columns) as vectors onto PC axes
+            plt.arrow(0, 0, xvector[i]*max(xs), yvector[i]*max(ys),
+                color='r', width=0.0005, head_width=0.0025)
+            plt.text(xvector[i]*max(xs)*1.2, yvector[i]*max(ys)*1.2,
+                list(data.columns.values)[i], color='r',
+            bbox={'facecolor': 'white', 'alpha': 0.8, 'pad': 10})
     plt.xlabel("PC"+str(pc_i+1))
     plt.ylabel("PC"+str(pc_j+1))
     plt.title(title)
@@ -142,5 +143,24 @@ def load_data(path, scaler):
     return  X_train, X_test, y_train, y_test
 
 
+def plot_corr(data, figsize=(15,15)):
+    '''
+    Plot correlation 
+    Args:
+    - data: pd dataframe
+    '''
+    corr = data.corr()
+    sns.set(font_scale=1.2)
+    mask = np.triu(np.ones_like(corr, dtype=bool))
+    with sns.axes_style("white"):
+        f, ax = plt.subplots(figsize=figsize)
+        ax = sns.heatmap(corr, mask=mask, square=True, 
+                         vmin= -1, vmax=1,
+                         cmap='RdBu_r', center=0, annot=True,
+                        annot_kws={'fontsize':8})
+
 ###################### Lists for handling dataframes ######################
 
+survival_cols = ['Observed','F_Time']
+feature_selection = ['NLE_ratio_85_17','amp_ratio','pos_ratio','NDE_cyle','NLO_avg']
+feature_selection2 = ['NLE_ratio_85_17','amp_ratio','pos_ratio','Avg_RP','NLO_avg']
