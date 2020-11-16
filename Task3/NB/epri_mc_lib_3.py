@@ -162,5 +162,5 @@ def plot_corr(data, figsize=(15,15)):
 ###################### Lists for handling dataframes ######################
 
 survival_cols = ['Observed','F_Time']
-feature_selection = ['NLE_ratio_85_17','amp_ratio','pos_ratio','NDE_cyle','NLO_avg']
+feature_selection = ['NLE_ratio_85_17','amp_ratio','pos_ratio','NDE_cycle','NLO_avg']
 feature_selection2 = ['NLE_ratio_85_17','amp_ratio','pos_ratio','Avg_RP','NLO_avg']
