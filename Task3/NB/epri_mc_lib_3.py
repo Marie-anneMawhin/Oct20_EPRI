@@ -158,6 +158,30 @@ def plot_corr(data, figsize=(15,15)):
                          vmin= -1, vmax=1,
                          cmap='RdBu_r', center=0, annot=True,
                         annot_kws={'fontsize':8})
+        
+def score_survival_model(model, X, y):
+    prediction = model.predict(X)
+    result = concordance_index_censored(y['Observed'], y['F_Time'], prediction)
+    return result[0]
+
+def plot_performance(gcv):
+    n_splits = gcv.cv.n_splits
+    cv_scores = {"alpha": [], "test_score": [], "split": []}
+    order = []
+    for i, params in enumerate(gcv.cv_results_["params"]):
+        name = "%.5f" % params["alpha"]
+        order.append(name)
+        for j in range(n_splits):
+            vs = gcv.cv_results_["split%d_test_score" % j][i]
+            cv_scores["alpha"].append(name)
+            cv_scores["test_score"].append(vs)
+            cv_scores["split"].append(j)
+    df = pandas.DataFrame.from_dict(cv_scores)
+    _, ax = plt.subplots(figsize=(11, 6))
+    sns.boxplot(x="alpha", y="test_score", data=df, order=order, ax=ax)
+    _, xtext = plt.xticks()
+    for t in xtext:
+        t.set_rotation("vertical")
 
 ###################### Lists for handling dataframes ######################
 
