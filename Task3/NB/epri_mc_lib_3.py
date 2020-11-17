@@ -163,6 +163,8 @@ def plot_corr(data, figsize=(15,15)):
         
 def score_survival_model(model, X, y):
     prediction = model.predict(X)
+    if not getattr(model, "_predict_risk_score", True):
+        prediction *= -1  # convert prediction on time scale to risk scale
     result = concordance_index_censored(y['Observed'], y['F_Time'], prediction)
     return result[0]
 
