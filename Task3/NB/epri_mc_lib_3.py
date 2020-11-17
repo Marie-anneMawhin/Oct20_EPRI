@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 import seaborn as sns
-from sksurv.metrics import concordance_index_censored
+from sksurv.metrics import concordance_index_censored, concordance_index_ipcw
 
 
 ###################### General functions ######################
@@ -166,6 +166,18 @@ def score_survival_model(model, X, y):
     if not getattr(model, "_predict_risk_score", True):
         prediction *= -1  # convert prediction on time scale to risk scale
     result = concordance_index_censored(y['Observed'], y['F_Time'], prediction)
+    return result[0]
+
+def score_survival_model_ipcw(model, X_test, y_train, y_test):
+    '''args: 
+    -model
+    -X_test
+    -y_train
+    -y_test'''
+    prediction = model.predict(X_test)
+    if not getattr(model, "_predict_risk_score", True):
+        prediction *= -1  # convert prediction on time scale to risk scale
+    result = concordance_index_ipcw(y_train, y_test, prediction)
     return result[0]
 
 def calc_median_survival(survival_func):
