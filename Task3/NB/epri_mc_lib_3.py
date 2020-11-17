@@ -166,7 +166,24 @@ def score_survival_model(model, X, y):
     result = concordance_index_censored(y['Observed'], y['F_Time'], prediction)
     return result[0]
 
-
+def calc_median_survival(survival_func):
+    '''
+    Calculate the median survival as the time when survival probability falls below 0.5
+    If it doesn't fall below 0.5 then it will be set as the last time point observed
+    Args:
+    - survival_func: array of survival functions returned by predict_survival_function()
+    returns: 
+    - median_survival_list: list of median survival times
+    '''
+    median_survival_list = []
+    for fn in survival_func:
+        found_list = np.where(fn(fn.x) <= 0.5)[0]
+        if len(found_list) != 0:
+            found_index = np.min(found_list)
+            median_survival_list.append(fn.x[found_index])
+        else:
+            median_survival_list.append(fn.x[len(fn.x)-1])
+    return median_survival_list
 
 ###################### Lists for handling dataframes ######################
 
