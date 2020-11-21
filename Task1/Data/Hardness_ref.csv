@@ -1,9 +1,0 @@
-,Condition,Pipe short name,Tube short name,Target Hardness(HV 5.0),Actual MedianHardness
-0,Fully Ferritic,P91_FF,T91_FF,160,147
-1,HAZ + Tempered,P91_HAZ_T,T91_HAZ_T,215,170
-2,Over-Tempered,P91_OT,T91_OT,185,198
-3,Tempered,P91_T,T91_T,195,207
-4,Normalized + Tempered,P91_N_T,T91_N_T,215,208
-5,As received,P91_AR,T91_AR,215,220
-6,HAZ,P91_HAZ,T91_HAZ,300,405
-7,Normalized,P91_N,T91_N,425,428
